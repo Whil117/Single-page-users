@@ -24,7 +24,7 @@ export const Myusers: React.FC = () => {
   }, [count]);
   
   useEffect(() => {
-    const pageNumber = localStorage.getItem("page");
+    const pageNumber = localStorage.getItem("page") || 1;
     setcount(Number(pageNumber));
   }, []);
 
