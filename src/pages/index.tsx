@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Myusers } from "../components/Myusers";
-// import { ProjectsDataFake } from "../components/UserData";
+import { FC } from "react";
+import { Myusers } from "../components/Users";
+import { ChakraProvider } from "@chakra-ui/react"
 
-interface Users {
-  name: string;
-  id: number;
-}
-
-const Home: React.FC = () => {
-  const [data, setstate] = useState<Users[]>([]);
-
-  return (
-    <>
-      <div>
-      <Myusers />
-      </div>
-    </>
-  );
+const Home: FC = () =>{
+    return (
+        <ChakraProvider>
+             <Myusers />
+        </ChakraProvider>
+    )
 };
-//porque typar un map?
+
 export default Home;
