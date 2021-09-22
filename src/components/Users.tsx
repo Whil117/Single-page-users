@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from "react";
 import { Button, Text, Image ,Flex, Box} from "@chakra-ui/react";
+import Theme from "./Theme";
 interface Users {
   first_name: string;
   last_name: string;
@@ -37,6 +38,7 @@ export const Myusers: FC = () => {
   return (
     <div >
       <h1 >Page:{pageNumber} of 2</h1>
+      <Theme />
       <Button m={2} colorScheme="gray" onClick={handleBackPage}>
         Back
       </Button>
