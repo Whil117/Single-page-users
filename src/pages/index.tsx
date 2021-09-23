@@ -1,15 +1,23 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Myusers } from "../components/Users";
 import { ChakraProvider } from "@chakra-ui/react";
-import MyContext , {propsTheme} from "../hooks/useContext";
+import ThemeContext, { themes } from "../hooks/useContext";
+import { Global, css } from "@emotion/react";
 
 const Home: FC = () => {
+  const [theme, setTheme] = useState(themes.dark);
+
+  const handleTheme = () =>
+    theme === themes.dark ? setTheme(themes.light) : setTheme(themes.dark);
   return (
-    <ChakraProvider>
-      <MyContext.Provider value={propsTheme}>
+      <ThemeContext.Provider value={{ theme, handleTheme }}>
+        <Global  styles={css`
+          body{
+            background-color: ${theme.backgroundColor};
+          }
+        `}/>
         <Myusers />
-      </MyContext.Provider>
-    </ChakraProvider>
+      </ThemeContext.Provider>
   );
 };
 

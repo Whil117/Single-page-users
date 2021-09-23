@@ -1,12 +1,23 @@
 import { createContext } from "react";
 
-export const propsTheme = {
-    theme:"dark"
-}
+export const themes = {
+  dark: {
+    color: "white",
+    backgroundColor: "Black",
+  },
+  light: {
+    color: "black",
+    backgroundColor: "white",
+  },
+};
 interface Props {
-    theme:string
+  theme: {
+    color: string;
+    backgroundColor: string;
+  };
+  handleTheme: () => void;
 }
 
-const MyContext = createContext<Props>({} as Props)
+const ThemeContext = createContext<Props>({} as Props);
 
-export default MyContext
+export default ThemeContext;
