@@ -4,8 +4,6 @@ import { Div, Label } from "../styles/Theme/Theme";
 
 const Theme: FC = () => {
   const { theme, handleTheme } = useContext(ThemeContext);
-  console.log(theme)
-  console.log(handleTheme)
   return (
     <Div theme={theme.color === "white"}>
       <Label theme={theme.color === "white"} htmlFor="white">
