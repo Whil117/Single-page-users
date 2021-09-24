@@ -10,44 +10,62 @@ import { Button, Text, Image, Flex, Box } from "@chakra-ui/react";
 import ThemeContext from "../hooks/useContext";
 import Theme from "./Theme";
 import CButton from "../components/Button";
+import User from "./User";
 
-interface Users {
-  id?: number;
+export interface Users {
+  id: number;
   first_name: string;
   last_name: string;
   avatar: string;
   email: string;
+  favorite: boolean;
 }
-interface IAction {
-  type: string;
-  payload: Users;
-}
+type IAction =
+  | {
+      type: string;
+      payload: Users;
+    }
+  | { type: string; payload: { id: number } };
+// | { type: string; payload:Users[] | {id:number} };
 
 const reducer = (state: Users[], action: IAction): Users[] => {
   switch (action.type) {
-    case "add":
-      return [...state, action.payload];
-    case "delete":
-      return state.filter((item) => item.id !== action.payload.id);
+    case "update":
+      return [...action.payload];
+    // case "add":
+    //   return [...state, action.payload];
+    // case "delete":
+    //   return state.filter((item) => item.id !== action.payload.id);
+    case "check":
+      return state.map((user) =>
+        user.id === action.payload.id
+          ? { ...user, favorite: !user.favorite }
+          : user
+      );
     default:
       return state;
   }
 };
 
 export const Myusers: FC = () => {
-  const [data, setData] = useState<Users[]>([]);
+  // const [data, setData] = useState<Users[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const { theme } = useContext(ThemeContext);
-  const [userFav, dispatch] = useReducer<Reducer<Users[], IAction>>(
-    reducer,
-    data
-  );
+  const [user, dispatch] = useReducer<Reducer<Users[], IAction>>(reducer, []);
 
   const useFetch = async (value: number) => {
     const url = `https://reqres.in/api/users?page=${value}`;
     const resp = await fetch(url);
     const { data } = await resp.json();
-    setData(data);
+
+    const newData = data.map((user: any) => {
+      return {
+        ...user,
+        favorite: false,
+      };
+    });
+    // setData(newData)
+    dispatch({ type: "update", payload: newData });
     localStorage.setItem("pageUser", JSON.stringify(value));
   };
 
@@ -65,7 +83,9 @@ export const Myusers: FC = () => {
   const handleBackPage = () =>
     pageNumber <= 1 ? setPageNumber(2) : setPageNumber(pageNumber - 1);
 
-  console.log(userFav);
+  const handleCheck = (id: number) => {
+    dispatch({ type: "check", payload: id });
+  };
   return (
     <main>
       <h1 style={{ color: theme.color }}>Page:{pageNumber} of 2</h1>
@@ -103,47 +123,14 @@ export const Myusers: FC = () => {
         </div>
       </div>
       <Flex justifyContent="space-around" flexWrap="wrap">
-        {data.map((item) => (
-          <Box m="2" key={item.first_name}>
-            <Image
-              boxSize="150px"
-              borderRadius="5px"
-              objectFit="cover"
-              src={item.avatar}
-              alt={item.first_name}
-            />
-            <p style={{ color: theme.color }}>
-              <b>
-                {item.first_name} {item.last_name}
-              </b>
-            </p>
-            <p style={{ color: theme.color }}>{item.email}</p>
-            {userFav.map((user) => {
-              console.log("userFav", user);
-            })}
-          </Box>
+        {user.map((item) => (
+          <User
+            key={item.id}
+            data={{ ...item, color: theme.color }}
+            handleCheck={handleCheck}
+          />
         ))}
       </Flex>
     </main>
   );
 };
-/*
-              if (user.id === item.id) {
-                return (
-                  <button
-                    onClick={() => dispatch({ type: "delete", payload: item })}
-                  >
-                    UnFavorite
-                  </button>
-                );
-              } else {
-                return (
-                  <button
-                    onClick={() => dispatch({ type: "add", payload: item })}
-                  >
-                    Favorite
-                  </button>
-                );
-              } 
-
-              */
