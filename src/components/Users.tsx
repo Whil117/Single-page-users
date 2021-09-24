@@ -6,7 +6,7 @@ import {
   useReducer,
   useState,
 } from "react";
-import { Button, Text, Image, Flex, Box } from "@chakra-ui/react";
+import { Flex } from "@chakra-ui/react";
 import ThemeContext from "../hooks/useContext";
 import Theme from "./Theme";
 import CButton from "../components/Button";
@@ -20,12 +20,10 @@ export interface Users {
   email: string;
   favorite: boolean;
 }
-type IAction =
-   {
-      type: string;
-      payload: any;
-    }
-
+type IAction = {
+  type: string;
+  payload:any;
+};
 
 const reducer = (state: Users[], action: IAction): Users[] => {
   switch (action.type) {
@@ -81,7 +79,7 @@ export const Myusers: FC = () => {
     pageNumber <= 1 ? setPageNumber(2) : setPageNumber(pageNumber - 1);
 
   const handleCheck = (id: number) => {
-    dispatch({ type: "check", payload: {id} });
+    dispatch({ type: "check", payload: { id } });
   };
   return (
     <main>
