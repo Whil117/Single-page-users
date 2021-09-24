@@ -21,12 +21,11 @@ export interface Users {
   favorite: boolean;
 }
 type IAction =
-  | {
+   {
       type: string;
-      payload: Users;
+      payload: any;
     }
-  | { type: string; payload: { id: number } };
-// | { type: string; payload:Users[] | {id:number} };
+
 
 const reducer = (state: Users[], action: IAction): Users[] => {
   switch (action.type) {
@@ -48,7 +47,6 @@ const reducer = (state: Users[], action: IAction): Users[] => {
 };
 
 export const Myusers: FC = () => {
-  // const [data, setData] = useState<Users[]>([]);
   const [pageNumber, setPageNumber] = useState<number>(1);
   const { theme } = useContext(ThemeContext);
   const [user, dispatch] = useReducer<Reducer<Users[], IAction>>(reducer, []);
@@ -58,13 +56,12 @@ export const Myusers: FC = () => {
     const resp = await fetch(url);
     const { data } = await resp.json();
 
-    const newData = data.map((user: any) => {
+    const newData = data.map((user: Users) => {
       return {
         ...user,
         favorite: false,
       };
     });
-    // setData(newData)
     dispatch({ type: "update", payload: newData });
     localStorage.setItem("pageUser", JSON.stringify(value));
   };
@@ -84,7 +81,7 @@ export const Myusers: FC = () => {
     pageNumber <= 1 ? setPageNumber(2) : setPageNumber(pageNumber - 1);
 
   const handleCheck = (id: number) => {
-    dispatch({ type: "check", payload: id });
+    dispatch({ type: "check", payload: {id} });
   };
   return (
     <main>
