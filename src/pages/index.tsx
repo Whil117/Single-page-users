@@ -22,7 +22,6 @@ const Home: FC = () => {
     useEffect(() => {
       localStorage.setItem("theme", JSON.stringify(theme));
     }, [theme]);
-    console.log(theme)
   return (
       <ThemeContext.Provider value={{ theme, handleTheme }}>
         <Global  styles={css`
