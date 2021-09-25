@@ -22,20 +22,16 @@ export interface Users {
 }
 type IAction = {
   type: string;
-  payload:any;
+  payload: any;
 };
 
 const reducer = (state: Users[], action: IAction): Users[] => {
   switch (action.type) {
     case "update":
       return [...action.payload];
-    // case "add":
-    //   return [...state, action.payload];
-    // case "delete":
-    //   return state.filter((item) => item.id !== action.payload.id);
     case "check":
       return state.map((user) =>
-        user.id === action.payload.id
+        user.id === action.payload
           ? { ...user, favorite: !user.favorite }
           : user
       );
@@ -43,6 +39,11 @@ const reducer = (state: Users[], action: IAction): Users[] => {
       return state;
   }
 };
+// const localData =  () => {
+//   if (typeof window !== "undefined") {
+//     return JSON.parse(localStorage.getItem("data") || "[]")
+//   }
+// }
 
 export const Myusers: FC = () => {
   const [pageNumber, setPageNumber] = useState<number>(1);
@@ -61,9 +62,9 @@ export const Myusers: FC = () => {
       };
     });
     dispatch({ type: "update", payload: newData });
+
     localStorage.setItem("pageUser", JSON.stringify(value));
   };
-
   useEffect(() => {
     useFetch(pageNumber);
   }, [pageNumber]);
@@ -79,8 +80,9 @@ export const Myusers: FC = () => {
     pageNumber <= 1 ? setPageNumber(2) : setPageNumber(pageNumber - 1);
 
   const handleCheck = (id: number) => {
-    dispatch({ type: "check", payload: { id } });
+    dispatch({ type: "check", payload: id });
   };
+
   return (
     <main>
       <h1 style={{ color: theme.color }}>Page:{pageNumber} of 2</h1>

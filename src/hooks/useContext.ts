@@ -1,4 +1,5 @@
-import { createContext } from "react";
+import { createContext, Dispatch, SetStateAction } from "react";
+import { Users } from "../components/Users";
 
 export const themes = {
   dark: {
@@ -16,6 +17,8 @@ interface Props {
     backgroundColor: string;
   };
   handleTheme: () => void;
+  setLocalData: Dispatch<SetStateAction<Users[]>>
+  localData:Users[]
 }
 
 const ThemeContext = createContext<Props>({} as Props);
